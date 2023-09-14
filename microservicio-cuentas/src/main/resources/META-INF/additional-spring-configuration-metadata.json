@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "ntt.data.bootcamp.s01-client-service",
+    "type": "java.lang.String",
+    "description": "A description for 'ntt.data.bootcamp.s01-client-service'"
+  },
+  {
+    "name": "ntt.data.bootcamp.s01-account-service",
+    "type": "java.lang.String",
+    "description": "A description for 'ntt.data.bootcamp.s01-account-service'"
+  },
+  {
+    "name": "ntt.data.bootcamp.s01-credit-service",
+    "type": "java.lang.String",
+    "description": "A description for 'ntt.data.bootcamp.s01-credit-service'"
+  },
+  {
+    "name": "ntt.data.bootcamp.s01-transaction-service",
+    "type": "java.lang.String",
+    "description": "A description for 'ntt.data.bootcamp.s01-transaction-service'"
+  }
+]}
