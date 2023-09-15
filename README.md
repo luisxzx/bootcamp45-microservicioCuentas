@@ -3,6 +3,7 @@ realizar los siguientes cambios para poder deployar en entorno local
 cambiar todo lo que hay en application.properties por lo siguiente :
 
 
+
 ntt.data.bootcamp.s01-client-service = http://localhost:8080
 #ntt.data.bootcamp.s01-account-service = https://localhost:8081
 ntt.data.bootcamp.s01-credit-service = http://localhost:8082
