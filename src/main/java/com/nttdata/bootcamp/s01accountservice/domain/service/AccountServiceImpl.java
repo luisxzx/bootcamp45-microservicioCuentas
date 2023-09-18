@@ -282,4 +282,30 @@ public class AccountServiceImpl implements AccountService {
 				}));
 	}
 
+	@Override
+	public Flux<AccountDetails> findByFirstOwnerClient(String clientId) {
+		return accountMongoRepository.findByFirstOwnerClient(clientId)
+				.map(AccountMapper::mapDocumentToDto);
+	}
+
+	@Override
+	public Mono<Void> updateAccountBalance(String accountId, BigDecimal newBalance) {
+		if (!ObjectId.isValid(accountId)) {
+			return Mono.error(new IllegalArgumentException("ID de cuenta inválido: " + accountId));
+		}
+		return accountMongoRepository.findById(new ObjectId(accountId))
+				.flatMap(account -> {
+					account.setBalance(newBalance);
+					return accountMongoRepository.save(account);
+				})
+				.then();
+	}
+
+
+
+
+
+
+
+
 }

@@ -1,4 +1,5 @@
 package com.nttdata.bootcamp.s01accountservice.application;
+import java.math.BigDecimal;
 import java.util.List;
 import com.nttdata.bootcamp.s01accountservice.model.AccountCreateInput;
 import com.nttdata.bootcamp.s01accountservice.model.AccountDetails;
@@ -49,4 +50,11 @@ public interface AccountService {
 	 * @return un AccountDetails.
 	 */
 	Mono<AccountDetails> accountsWithdrawPost(Mono<TransactionInput> transactionInput);
+
+	Flux<AccountDetails> findByFirstOwnerClient(String clientId);
+
+	Mono<Void> updateAccountBalance(String accountId, BigDecimal newBalance);
+
+
+
 }

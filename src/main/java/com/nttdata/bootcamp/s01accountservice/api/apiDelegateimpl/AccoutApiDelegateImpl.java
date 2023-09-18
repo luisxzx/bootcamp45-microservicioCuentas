@@ -1,4 +1,5 @@
 package com.nttdata.bootcamp.s01accountservice.api.apiDelegateimpl;
+import com.nttdata.bootcamp.s01accountservice.model.AccountUpdateInput;
 import com.nttdata.bootcamp.s01accountservice.model.TransactionInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import com.nttdata.bootcamp.s01accountservice.application.AccountService;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Component
 public class AccoutApiDelegateImpl implements AccountsApiDelegate {
@@ -47,10 +50,8 @@ public class AccoutApiDelegateImpl implements AccountsApiDelegate {
 	 * @param clientId parametro de AccountDetails.
 	 * @return accountsClientIdGet del clientId.
 	 */
-	@Override
-	public Mono<ResponseEntity<AccountDetails>> accountsClientIdGet(String clientId, ServerWebExchange exchange) {
-		return Mono.fromSupplier(() -> AccountsApiDelegate.super.accountsClientIdGet(clientId, exchange).block());
-	}
+
+
 
 	/**
 	 * Método para guardar una transacción.
@@ -101,6 +102,25 @@ public class AccoutApiDelegateImpl implements AccountsApiDelegate {
 				.map(ResponseEntity::ok)
 				.onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build()));
 	}
+
+
+	@Override
+	public Mono<ResponseEntity<Flux<AccountDetails>>> accountsClientsClientIdGet(String clientId, ServerWebExchange exchange) {
+		Flux<AccountDetails> flux = accountService.findByFirstOwnerClient(clientId).switchIfEmpty(Flux.empty());
+		return Mono.just(ResponseEntity.ok(flux));
+	}
+
+	@Override
+	public Mono<ResponseEntity<Void>> accountsUpdatePut(Mono<AccountUpdateInput> accountUpdateInput, ServerWebExchange exchange) {
+		return accountUpdateInput
+				.flatMap(input -> accountService.updateAccountBalance(input.getId(), input.getBalance()))
+				.<ResponseEntity<Void>>then(Mono.just(ResponseEntity.ok().build()))
+				.onErrorResume(IllegalArgumentException.class, e -> Mono.just(ResponseEntity.badRequest().build()));
+	}
+
+
+
+
 }
 
 

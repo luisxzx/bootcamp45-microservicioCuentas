@@ -127,7 +127,7 @@ paths:
               example:
                 message: An error occurred on the server. Please try again later.
 
-  /accounts/{clientId}:
+  /accounts/clients/{clientId}:
     get:
       summary: Get account details by ClientID
       parameters:
@@ -143,7 +143,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AccountDetails'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDetails'
+
 
   /accounts/{accountId}:
     get:
@@ -188,6 +191,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+  /accounts/update:
+    put:
+      summary: Update the account balance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdateInput'
+      responses:
+        '204':
+          description: Account updated successfully
+        '400':
+          description: Bad request. Invalid input data.
+        '500':
+          description: Internal server error. Something went wrong on the server.
+
+
 components:
   schemas:
     AccountCreateInput:
@@ -356,3 +377,16 @@ components:
         - comision
         - transactionType
         - transactionDate
+
+    AccountUpdateInput:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the account to be updated
+        balance:
+          type: number
+          description: The new balance of the account.
+      required:
+        - id
+        - balance

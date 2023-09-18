@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import com.nttdata.bootcamp.s01accountservice.domain.document.AccountDocument;
 import com.nttdata.bootcamp.s01accountservice.model.AccountCreateInput.TypeEnum;
 import com.nttdata.bootcamp.s01accountservice.model.AccountDetails;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,4 +41,12 @@ public interface AccountMongoRepository extends ReactiveMongoRepository<AccountD
 	 * @return una lista del objeto AccountDetails.
 	 */
 	Flux<AccountDetails> findAllById(List<ObjectId> idList);
+
+	@Query("{ 'ownerClients.0': ?0 }")
+	Flux<AccountDocument> findByFirstOwnerClient(String clientId);
+
+
+
+
+
 }
